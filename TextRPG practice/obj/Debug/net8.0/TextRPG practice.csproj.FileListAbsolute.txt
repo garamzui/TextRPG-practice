@@ -1,0 +1,14 @@
+D:\c# practice\TextRPG practice\TextRPG practice\bin\Debug\net8.0\TextRPG practice.exe
+D:\c# practice\TextRPG practice\TextRPG practice\bin\Debug\net8.0\TextRPG practice.deps.json
+D:\c# practice\TextRPG practice\TextRPG practice\bin\Debug\net8.0\TextRPG practice.runtimeconfig.json
+D:\c# practice\TextRPG practice\TextRPG practice\bin\Debug\net8.0\TextRPG practice.dll
+D:\c# practice\TextRPG practice\TextRPG practice\bin\Debug\net8.0\TextRPG practice.pdb
+D:\c# practice\TextRPG practice\TextRPG practice\obj\Debug\net8.0\TextRPG practice.GeneratedMSBuildEditorConfig.editorconfig
+D:\c# practice\TextRPG practice\TextRPG practice\obj\Debug\net8.0\TextRPG practice.AssemblyInfoInputs.cache
+D:\c# practice\TextRPG practice\TextRPG practice\obj\Debug\net8.0\TextRPG practice.AssemblyInfo.cs
+D:\c# practice\TextRPG practice\TextRPG practice\obj\Debug\net8.0\TextRPG practice.csproj.CoreCompileInputs.cache
+D:\c# practice\TextRPG practice\TextRPG practice\obj\Debug\net8.0\TextRPG practice.dll
+D:\c# practice\TextRPG practice\TextRPG practice\obj\Debug\net8.0\refint\TextRPG practice.dll
+D:\c# practice\TextRPG practice\TextRPG practice\obj\Debug\net8.0\TextRPG practice.pdb
+D:\c# practice\TextRPG practice\TextRPG practice\obj\Debug\net8.0\TextRPG practice.genruntimeconfig.cache
+D:\c# practice\TextRPG practice\TextRPG practice\obj\Debug\net8.0\ref\TextRPG practice.dll
