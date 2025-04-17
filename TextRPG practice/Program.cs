@@ -15,6 +15,7 @@ Weapon spoon = new Weapon()
     damage = -5,
     price = 2000,
     isEquip = true,
+    explanation = "낡은 숟가락입니다. 버리는 게 나을 것 같습니다." 
 };
 User.Inventory.Add(spoon);
 Weapon shavel = new Weapon()
@@ -23,6 +24,7 @@ Weapon shavel = new Weapon()
     damage = 20,
     price = 5000,
     isEquip = false,
+    explanation = "삽 입니다. 삽질 할 때 씁니다."
 };
 Weapon sickle = new Weapon()
 {
@@ -30,6 +32,7 @@ Weapon sickle = new Weapon()
     damage = 15,
     price = 3000,
     isEquip = false,
+    explanation = "낫 입니다. 낫 놓고 기역자 모릅니다."
 };
 Weapon stick = new Weapon()
 {
@@ -37,6 +40,7 @@ Weapon stick = new Weapon()
     damage = 30,
     price = 50000,
     isEquip = false,
+    explanation = "흑단으로 된 지팡이 입니다."
 };
 Weapon hyojason = new Weapon()
 {
@@ -44,6 +48,7 @@ Weapon hyojason = new Weapon()
     damage = 1,
     price = 10000,
     isEquip = false,
+    explanation = "하나 가지고 있으면 좋습니다."
 };
 Weapon chainSaw = new Weapon()
 {
@@ -51,6 +56,7 @@ Weapon chainSaw = new Weapon()
     damage = 500,
     price = 150000,
     isEquip = false,
+    explanation ="위잉위이이잉위잉이잉"
 };
 //방어구 인스턴스
 Armour momppae = new Armour()
@@ -59,6 +65,7 @@ Armour momppae = new Armour()
     defense = 1,
     price = 1500,
     isEquip = true,
+    explanation ="이미 이 곳에 오래 산 기분입니다."
 };
 User.Inventory.Add(momppae);
 Armour smock  = new Armour()
@@ -67,6 +74,7 @@ Armour smock  = new Armour()
     defense = 15,
     price = 5000,
     isEquip = false,
+    explanation = "행동이 거침 없어 집니다."
 };
 
 Armour raincoat = new Armour()
@@ -75,6 +83,7 @@ Armour raincoat = new Armour()
     defense = 12,
     price = 4500,
     isEquip = false,
+    explanation = "무기로 낫을 골랐다면 세트가 아닐까요"
 };
 
 Armour hanbok  = new Armour()
@@ -83,6 +92,7 @@ Armour hanbok  = new Armour()
     defense = 2,
     price = 20000,
     isEquip = false,
+    explanation = "주민들 틈에 위화감 없이 잡입할 때 좋습니다."
 };
 
 Armour sweats = new Armour()
@@ -91,22 +101,11 @@ Armour sweats = new Armour()
     defense = 10,
     price = 3500,
     isEquip = false,
+    explanation = "편안해 보입니다."
 };
-
-
-
-
-
-
-
-
-
 
 bool GameIsRunning = true; // 전체 게임흐름 제어
 bool FistScene = true; // 게임 intro 씬 제어
-
-
-
 
 while (GameIsRunning)// 전체 게임흐름
 {
@@ -450,48 +449,10 @@ while (GameIsRunning)// 전체 게임흐름
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
-
-
-
-
-
-
-
-
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
+//게임 시작화면을 위한 클래스
  static public class Start
 
 {
@@ -533,7 +494,6 @@ while (GameIsRunning)// 전체 게임흐름
     }
 }
 
-
 public static class User  //플레이어 클래스
 {
     public static int level { get; set; } = 1;
@@ -551,9 +511,6 @@ public static class User  //플레이어 클래스
     public static List<Item> Inventory { get; set; } = new List<Item>();
 
 }
-
-
-
 public class EndGame //종료하는 키워드를 사용자 입력을 저장해서 사용해 보려고 만든 클래스 - 사용자 커스텀 기능
 {
     string endGame { get; set; }
@@ -562,9 +519,6 @@ public class EndGame //종료하는 키워드를 사용자 입력을 저장해�
 
     }
 }
-
-
-
 
 public class Monster //몬스터 클래스
 {
@@ -613,10 +567,8 @@ public abstract class Item
     public int price { get; set; }
 
     public int conut { get; set; } = 1;
-    public void explanation(string input)
-    {
+    public string explanation { get; set; }
 
-    }
 }
 
 //무기 : 아이템
@@ -625,14 +577,7 @@ public class Weapon : Item
     public string type = "무기";
     public int damage { get; set; } = 0;
     public bool isEquip { get; set; } = false;
-    public void explanation(string input)
-    {
-        Console.WriteLine($"{itemName}({type})|공격력+{damage}|{input}|{price}");
-    }
-    public void equipText()
-    {
-        Console.WriteLine($"{itemName}을(를) 장착 하였습니다.");
-    }
+    
 }
 
 
@@ -643,15 +588,7 @@ public class Armour : Item
     public string type = "방어구";
     public int defense { get; set; } = 0;
     public bool isEquip { get; set; } = false;
-    public void explanation(string input)
-    {
-        Console.WriteLine($"{itemName}({type})|방어력+{defense}|{input}|{price}");
-    }
-    public void equipText()
-    {
-        Console.WriteLine($"{itemName}을(를) 장착 하였습니다.");
-    }
-
+    
 }
 //소비 아이템 클래스
 public class ConsumableItem : Item
