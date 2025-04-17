@@ -283,6 +283,7 @@ while (GameIsRunning)// 전체 게임흐름
                 string choice = Console.ReadLine();
 
                 bool quitAnswer = true;
+
                 switch (choice)
                 {
                     case "1":
