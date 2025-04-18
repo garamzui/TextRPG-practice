@@ -14,7 +14,7 @@ Weapon spoon = new Weapon()
 {
     itemName = "숟가락",
     damage = -5,
-    price = 2000,
+    price = 30,
     isEquip = true,
     explanation = "낡은 숟가락입니다. 버리는 게 나을 것 같습니다." 
 };
@@ -128,14 +128,24 @@ Shop.stash.Add(sweats);
 //소비아이템 인스턴스
 ConsumableItem potato = new ConsumableItem()
 {
-   itemName = "감자",
+    itemName = "감자",
+    recoverhp = 50,
     price = 500
 };
+User.Inventory.Add(potato);
 
 ConsumableItem sweetPotato = new ConsumableItem()
 {
     itemName = "고구마",
+    recoverhp = 50,
     price = 1000
+};
+User.Inventory.Add(sweetPotato);
+
+ConsumableItem sweetPPoTTaTTo = new ConsumableItem() //게임 승리 조건 
+{
+    itemName = "감자구마",
+    recoverhp = 1000
 };
 
 //몬스터 인스턴스
@@ -356,7 +366,7 @@ while (GameIsRunning)// 전체 게임흐름
                         User.ShowInventory();
                         while (quitAnswer)
                         {
-                            Console.WriteLine("1.장착관리\n0.나가기");
+                            Console.WriteLine("1.관리하기\n0.나가기");
                             string quit = Console.ReadLine();
                             switch (quit)
                             {
@@ -366,6 +376,7 @@ while (GameIsRunning)// 전체 게임흐름
                                     break;
                                 
                                 case "1":
+
                                     break;
 
                                 default:
@@ -589,7 +600,7 @@ public static class User  //플레이어 클래스
     public static int money { get; set; } = 500;
     public static void statusinfo()
     {
-        Console.WriteLine($"Lv.{level}\n{name}({job})\n공격력 : {damage}\n방어력 : {defence}\n체력 : {hp}\n소지금 : {money}원");
+        Console.WriteLine($"Lv.{level}\n{name}({job})\n공격력 : {damage}\n방어력 : {defence}\n체력 : {hp}/1000\n소지금 : {money}원");
     }
     public static List<Item> Inventory { get; set; } = new List<Item>();
 
@@ -612,13 +623,16 @@ public static class User  //플레이어 클래스
             Console.WriteLine("아이템이 없습니다.");
         }
         else
-        {   //삼항 연산자 (조건) ? "[E]" : "   " 검색해서 처음 사용
-            //아이템의 장착여부
+        {   //삼항 연산자 (조건) ? " 1 " : " 2 " 검색해서 처음 사용 //조건만족시" 1 "불만족시" 2 "의 값을 반환.  반환할 값은 자료형 일치 필요
+            
             Console.WriteLine("[아이템 목록]");
             foreach (var item in Inventory)
             {
-                string equippedMark = (item is Weapon w && w.isEquip) || (item is Armour a && a.isEquip) ? "[E]" : "";
-                Console.WriteLine($"{equippedMark} {item.itemName} | {item.explanation} | {item.price}원");
+                string equippedMark = (item is Weapon w && w.isEquip) || (item is Armour a && a.isEquip) ? "[E]" : "";//아이템의 장착여부
+                string thisDamage = (item is Weapon wp) ? "공격력 : " + wp.damage.ToString():"";
+                string thisDefense = (item is Armour am) ? "방어력 : " + am.defense.ToString():"";
+
+                Console.WriteLine($"{equippedMark} {item.itemName} | {item.explanation} | {thisDamage}{thisDefense}|{item.price}원");
             }
         }
     }
@@ -717,19 +731,22 @@ public abstract class Item
     }
     //소비 아이템 클래스
     public class ConsumableItem : Item
+{
+    public int recoverhp { get; set; } = 0;
+    public void Use()
     {
-
-        public void Isusing()
+        User.hp += recoverhp;
+        Console.WriteLine($"{itemName}를(을) 사용하였습니다.체력이 {recoverhp}만큼 증가 하였습니다.");
+        if (User.hp >= 1000)
         {
-            User.hp += 30;
-            Console.WriteLine($"{itemName}를(을) 사용하였습니다.");
-
+            User.hp = 1000;
         }
-
     }
 
-    //부엌 클래스
-    public class Kitchen
+}
+
+//부엌 클래스
+public class Kitchen
     {
         public void cook()
         {
