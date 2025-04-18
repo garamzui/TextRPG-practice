@@ -126,6 +126,25 @@ Armour sweats = new Armour()
     explanation = "편안해 보입니다."
 };
 Shop.stash.Add(sweats);
+//소비아이템 인스턴스
+ConsumableItem potato = new ConsumableItem()
+{
+   itemName = "감자",
+    price = 500
+};
+
+ConsumableItem sweetPotato = new ConsumableItem()
+{
+    itemName = "고구마",
+    price = 1000
+};
+
+//몬스터 인스턴스
+Monster squirrel = new Monster()
+{
+    hp = 30
+};
+
 
 bool GameIsRunning = true; // 전체 게임흐름 제어
 bool FistScene = true; // 게임 intro 씬 제어
@@ -543,27 +562,30 @@ public class EndGame //종료하는 키워드를 사용자 입력을 저장해�
     }
 }
 
-public class Monster //몬스터 클래스
+public  class Monster //몬스터 클래스
 {
-    public string name { get; set; }
-    public int hp { get; set; }
-    public int damage { get; set; }
-
-    public void attack(int damage)
+    public static string name { get; set; } = string.Empty;
+    public static int hp { get; set; } = 0;
+    public static int damage { get; set; } = 0;
+    public static int truedamage { get; set; } = Monster.damage -User.defence;
+    public void attack()
     {
 
+        User.hp -= truedamage;
+        Console.WriteLine($"{name}이(가){truedamage}의 피해를 가합니다.");
+        if (User.hp < 0) { User.hp = 0; }
     }
 
-    public void death(int hp)
+    public void death(Monster monster)
     {
         if (hp <= 0)
         {
-
+            monster = null;
         }
     }
     public void dropItem(string itemName)
     {
-        Console.WriteLine($"{name}{itemName}을 흘렸습니다.");
+        Console.WriteLine($"{name}이(가){itemName}을 흘렸습니다.");
     }
 
 }
@@ -582,7 +604,7 @@ public abstract class Item
 {
     public string itemName { get; set; }
     public int price { get; set; }
-
+    bool isSell { get; set; } = false;
     public int conut { get; set; } = 1;
     public string explanation { get; set; }
 
@@ -610,7 +632,7 @@ public class Armour : Item
 //소비 아이템 클래스
 public class ConsumableItem : Item
 {
-    public virtual string itemName { get; set; } = string.Empty;
+   
     public void Isusing()
     {
         User.hp += 30;
