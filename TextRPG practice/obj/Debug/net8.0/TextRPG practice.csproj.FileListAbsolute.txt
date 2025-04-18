@@ -12,3 +12,4 @@ D:\c# practice\TextRPG practice\TextRPG practice\obj\Debug\net8.0\refint\TextRPG
 D:\c# practice\TextRPG practice\TextRPG practice\obj\Debug\net8.0\TextRPG practice.pdb
 D:\c# practice\TextRPG practice\TextRPG practice\obj\Debug\net8.0\TextRPG practice.genruntimeconfig.cache
 D:\c# practice\TextRPG practice\TextRPG practice\obj\Debug\net8.0\ref\TextRPG practice.dll
+D:\c# practice\TextRPG practice\TextRPG practice\obj\Debug\net8.0\TextRPG practice.sourcelink.json

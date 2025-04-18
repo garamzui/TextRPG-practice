@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using static System.Net.Mime.MediaTypeNames;
+using static User;
 Console.OutputEncoding = Encoding.UTF8; // 아스키코드에 사용된 문자출력을 위한 
 
 
@@ -85,8 +86,6 @@ Armour momppae = new Armour()
 };
 User.Inventory.Add(momppae);
 
-
-User.Inventory.Add(momppae);
 Armour smock  = new Armour()
 {
     itemName = "작업복",
@@ -353,21 +352,63 @@ while (GameIsRunning)// 전체 게임흐름
                         break;
                    
                     case "2":
-                        
-                        
+                        Console.Clear();
+                        User.ShowInventory();
+                        while (quitAnswer)
+                        {
+                            Console.WriteLine("1.장착관리\n0.나가기");
+                            string quit = Console.ReadLine();
+                            switch (quit)
+                            {
+                                case "0":
+                                    Console.Clear();
+                                    quitAnswer = false;
+                                    break;
+                                
+                                case "1":
+                                    break;
+
+                                default:
+                                    Console.Clear();
+                                    Console.WriteLine("잘못 된 입력입니다.");
+
+                                    continue;
+
+                            }
+                        }
                         break;
                    
                     case "3":
                         Console.Clear();
-                        User.statusinfo();
-                        Console.WriteLine("나가기 - Enter Key");
-                        Console.ReadLine();
-                        Console.Clear();
+                        Shop.ShowStash();
+                        while (quitAnswer)
+                        {
+                            Console.WriteLine("1.구매하기\n0.나가기");
+                            string quit = Console.ReadLine();
+                            switch (quit)
+                            {
+                                case "0":
+                                    Console.Clear();
+                                    quitAnswer = false;
+                                    break;
+                                
+                                case "1":
+                                    break;
+                                
+                                default:
+                                    Console.Clear();
+                                    Console.WriteLine("잘못 된 입력입니다.");
+
+                                    continue;
+
+                            }
+                            
+                        }
                         break;
-                   
+
                     case "4":
                         Console.Clear();
-                        User.statusinfo();
+                        Console.WriteLine("미구현");
                         Console.WriteLine("나가기 - Enter Key");
                         Console.ReadLine();
                         Console.Clear();
@@ -552,104 +593,150 @@ public static class User  //플레이어 클래스
     }
     public static List<Item> Inventory { get; set; } = new List<Item>();
 
-}
-public class EndGame //종료하는 키워드를 사용자 입력을 저장해서 사용해 보려고 만든 클래스 - 사용자 커스텀 기능
-{
-    string endGame { get; set; }
-    public void quit()
+    public static void LevelUp()
     {
-
-    }
-}
-
-public  class Monster //몬스터 클래스
-{
-    public static string name { get; set; } = string.Empty;
-    public static int hp { get; set; } = 0;
-    public static int damage { get; set; } = 0;
-    public static int truedamage { get; set; } = Monster.damage -User.defence;
-    public void attack()
-    {
-
-        User.hp -= truedamage;
-        Console.WriteLine($"{name}이(가){truedamage}의 피해를 가합니다.");
-        if (User.hp < 0) { User.hp = 0; }
-    }
-
-    public void death(Monster monster)
-    {
-        if (hp <= 0)
+        if (exp == 10)
         {
-            monster = null;
+            level += 1;
+            exp = 0;
         }
     }
-    public void dropItem(string itemName)
+    public static void ShowInventory()
     {
-        Console.WriteLine($"{name}이(가){itemName}을 흘렸습니다.");
+        Console.Clear();
+        Console.WriteLine("인벤토리");
+        Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다.\n");
+
+        if (Inventory.Count == 0)
+        {
+            Console.WriteLine("아이템이 없습니다.");
+        }
+        else
+        {   //삼항 연산자 (조건) ? "[E]" : "   " 검색해서 처음 사용
+            //아이템의 장착여부
+            Console.WriteLine("[아이템 목록]");
+            foreach (var item in Inventory)
+            {
+                string equippedMark = (item is Weapon w && w.isEquip) || (item is Armour a && a.isEquip) ? "[E]" : "";
+                Console.WriteLine($"{equippedMark} {item.itemName} | {item.explanation} | {item.price}원");
+            }
+        }
+    }
+}
+    public class EndGame //종료하는 키워드를 사용자 입력을 저장해서 사용해 보려고 만든 클래스 - 사용자 커스텀 기능
+    {
+        string endGame { get; set; }
+        public void quit()
+        {
+
+        }
     }
 
-}
+    public class Monster //몬스터 클래스
+    {
+        public string name { get; set; } = string.Empty;
+        public int hp { get; set; } = 0;
+        public int damage { get; set; } = 0;
+
+        public void attack()
+        {
+            int truedamage = damage - User.defence;
+            if (truedamage < 0) { truedamage = 0; }
+            User.hp -= truedamage;
+            if (User.hp < 0) { User.hp = 0; }
+            Console.WriteLine($"{name}이(가){truedamage}의 피해를 가합니다.");
+
+        }
+
+        public bool death()
+        {
+            return hp <= 0;
+
+        }
+        public void dropItem(string itemName)
+        {
+            Console.WriteLine($"{name}이(가){itemName}을 흘렸습니다.");
+        }
+
+    }
 
 public static class Shop //가게 씬을 위한 클래스
 {
     public static string shopName = "구멍가게";
-   
+
     public static List<Item> stash { get; set; } = new List<Item>();
-    
-   
+
+    public static void ShowStash()
+    {
+        Console.Clear();
+        Console.WriteLine("뭐가 필요혀?");
+        Console.WriteLine("아이템을 구매할 수 있습니다..\n");
+
+        
+           
+            Console.WriteLine("[판매 목록]");
+        foreach (var item in stash)
+        {
+            string sellMark = (item is Item w && w.isSell) ? "재고소진" : item.price.ToString()+"원";
+                Console.WriteLine($" {item.itemName} | {item.explanation} | {sellMark}");
+            }
+        
+    }
+
 }
- 
+
 //아이템 클래스
 public abstract class Item
-{
-    public string itemName { get; set; }
-    public int price { get; set; }
-    bool isSell { get; set; } = false;
-    public int conut { get; set; } = 1;
-    public string explanation { get; set; }
-
-}
-
-//무기 : 아이템
-public class Weapon : Item
-{
-    public string type = "무기";
-    public int damage { get; set; } = 0;
-    public bool isEquip { get; set; } = false;
-    
-}
-
-
-
-//방어구 : 아이템
-public class Armour : Item
-{
-    public string type = "방어구";
-    public int defense { get; set; } = 0;
-    public bool isEquip { get; set; } = false;
-    
-}
-//소비 아이템 클래스
-public class ConsumableItem : Item
-{
-   
-    public void Isusing()
     {
-        User.hp += 30;
-        Console.WriteLine($"{itemName}를(을) 사용하였습니다.");
+        public string itemName { get; set; }
+        public int price { get; set; }
+        public bool isSell { get; set; } = false;
+        public int count { get; set; } = 1;
+        public string explanation { get; set; }
 
     }
 
-}
-
-//부엌 클래스
-public class Kitchen
-{
-    public void cook()
+    //무기 : 아이템
+    public class Weapon : Item
     {
+        public string type = "무기";
+        public int damage { get; set; } = 0;
+        public bool isEquip { get; set; } = false;
 
     }
-}
+
+
+
+    //방어구 : 아이템
+    public class Armour : Item
+    {
+        public string type = "방어구";
+        public int defense { get; set; } = 0;
+        public bool isEquip { get; set; } = false;
+
+    }
+    //소비 아이템 클래스
+    public class ConsumableItem : Item
+    {
+
+        public void Isusing()
+        {
+            User.hp += 30;
+            Console.WriteLine($"{itemName}를(을) 사용하였습니다.");
+
+        }
+
+    }
+
+    //부엌 클래스
+    public class Kitchen
+    {
+        public void cook()
+        {
+
+        }
+    }
+
 
 
  
