@@ -18,7 +18,9 @@ Weapon spoon = new Weapon()
     explanation = "낡은 숟가락입니다. 버리는 게 나을 것 같습니다." 
 };
 User.Inventory.Add(spoon);
-Weapon shavel = new Weapon()
+
+
+Weapon shovel = new Weapon()
 {
     itemName = "삽",
     damage = 20,
@@ -26,6 +28,9 @@ Weapon shavel = new Weapon()
     isEquip = false,
     explanation = "삽 입니다. 삽질 할 때 씁니다."
 };
+Shop.stash.Add(shovel);
+
+
 Weapon sickle = new Weapon()
 {
     itemName = "낫",
@@ -34,7 +39,10 @@ Weapon sickle = new Weapon()
     isEquip = false,
     explanation = "낫 입니다. 낫 놓고 기역자 모릅니다."
 };
-Weapon stick = new Weapon()
+Shop.stash.Add(sickle);
+
+
+Weapon cane = new Weapon()
 {
     itemName = "할머니의 지팡이",
     damage = 30,
@@ -42,6 +50,9 @@ Weapon stick = new Weapon()
     isEquip = false,
     explanation = "흑단으로 된 지팡이 입니다."
 };
+Shop.stash.Add(cane);
+
+
 Weapon hyojason = new Weapon()
 {
     itemName = "효자손",
@@ -50,6 +61,9 @@ Weapon hyojason = new Weapon()
     isEquip = false,
     explanation = "하나 가지고 있으면 좋습니다."
 };
+Shop.stash.Add(hyojason);
+
+
 Weapon chainSaw = new Weapon()
 {
     itemName = "전기톱",
@@ -58,6 +72,8 @@ Weapon chainSaw = new Weapon()
     isEquip = false,
     explanation ="위잉위이이잉위잉이잉"
 };
+Shop.stash.Add(chainSaw);
+
 //방어구 인스턴스
 Armour momppae = new Armour()
 {
@@ -68,6 +84,9 @@ Armour momppae = new Armour()
     explanation ="이미 이 곳에 오래 산 기분입니다."
 };
 User.Inventory.Add(momppae);
+
+
+User.Inventory.Add(momppae);
 Armour smock  = new Armour()
 {
     itemName = "작업복",
@@ -76,6 +95,7 @@ Armour smock  = new Armour()
     isEquip = false,
     explanation = "행동이 거침 없어 집니다."
 };
+Shop.stash.Add(smock);
 
 Armour raincoat = new Armour()
 {
@@ -85,6 +105,7 @@ Armour raincoat = new Armour()
     isEquip = false,
     explanation = "무기로 낫을 골랐다면 세트가 아닐까요"
 };
+Shop.stash.Add(raincoat);
 
 Armour hanbok  = new Armour()
 {
@@ -94,6 +115,7 @@ Armour hanbok  = new Armour()
     isEquip = false,
     explanation = "주민들 틈에 위화감 없이 잡입할 때 좋습니다."
 };
+Shop.stash.Add(hanbok);
 
 Armour sweats = new Armour()
 {
@@ -103,6 +125,7 @@ Armour sweats = new Armour()
     isEquip = false,
     explanation = "편안해 보입니다."
 };
+Shop.stash.Add(sweats);
 
 bool GameIsRunning = true; // 전체 게임흐름 제어
 bool FistScene = true; // 게임 intro 씬 제어
@@ -545,21 +568,15 @@ public class Monster //몬스터 클래스
 
 }
 
-public class Shop //가게 씬을 위한 클래스
+public static class Shop //가게 씬을 위한 클래스
 {
-    public string shopName = "구멍가게";
-    public List<Item> stash { get; set; } = new List<Item>();
-    public void DisplayItems()
-    {
-        Console.WriteLine($"[{shopName}]의 판매목록");
-
-        foreach (Item item in stash)
-        {
-            item.explanation("삽입니다.삽질할 때 사용합니다.");
-        }
-    }
-
+    public static string shopName = "구멍가게";
+   
+    public static List<Item> stash { get; set; } = new List<Item>();
+    
+   
 }
+ 
 //아이템 클래스
 public abstract class Item
 {
