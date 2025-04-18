@@ -378,7 +378,7 @@ while (GameIsRunning)// 전체 게임흐름
                         
                         while (quitAnswer)
                         {   User.ShowInventory();
-                            Console.WriteLine("1.관리하기\n0.나가기");
+                            Console.WriteLine("1.관리하기\n2.아이템 버리기\n0.나가기");
                             string quit = Console.ReadLine();
                             switch (quit)
                             {
@@ -391,7 +391,10 @@ while (GameIsRunning)// 전체 게임흐름
                                     User.ManageInventory();
                                     Console.Clear();
                                     break;
-
+                                case "2":
+                                    User.ThrowItem();
+                                    Console.Clear();
+                                    break;
                                 default:
                                     Console.Clear();
                                     Console.WriteLine("잘못 된 입력입니다.");
@@ -538,8 +541,10 @@ while (GameIsRunning)// 전체 게임흐름
                         }
                         break;
 
-                    default: Console.Clear();
+                    default:
+                        Console.Clear();
                         Console.WriteLine("잘못 된 입력입니다.");
+                        Anykey.anyKey();
                         break;
                 }
 
@@ -652,34 +657,130 @@ public static class User  //플레이어 클래스
         Console.Clear();
         Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다.\n");
         Console.WriteLine("장착or탈착, 사용 할 아이템 번호를 입력 해 주세요");
-
-        Console.WriteLine("아이템 ");
-        int index = 1;
-        foreach (var item in Inventory)
+        if (Inventory.Count == 0)
         {
-            string equippedMark = (item is Weapon w && w.isEquip) || (item is Armour a && a.isEquip) ? "[E]" : "";
-            string thisDamage = (item is Weapon wp) ? "공격력 : " + wp.damage.ToString() : "";
-            string thisDefense = (item is Armour am) ? "방어력 : " + am.defense.ToString() : "";
-            string thisRecoverHp = (item is ConsumableItem cs) ? "회복력 : " + cs.recoverhp.ToString() : "";
-            Console.WriteLine($"{equippedMark} {item.itemName} | {item.explanation} | {thisRecoverHp}{thisDamage}{thisDefense}|{item.price}원");
+            Console.Clear();
+            Console.WriteLine("아이템이 없습니다.");
+            Anykey.anyKey();
         }
-        
-        Console.WriteLine($"0.나가기");
+        else
+        {
+            Console.WriteLine("아이템 ");
+            int index = 1;
+            foreach (var item in Inventory)
+            {
+                string equippedMark = (item is Weapon w && w.isEquip) || (item is Armour a && a.isEquip) ? "[E]" : "";
+                string thisDamage = (item is Weapon wp) ? "공격력 : " + wp.damage.ToString() : "";
+                string thisDefense = (item is Armour am) ? "방어력 : " + am.defense.ToString() : "";
+                string thisRecoverHp = (item is ConsumableItem cs) ? "회복력 : " + cs.recoverhp.ToString() : "";
+                Console.WriteLine($"{index}.{equippedMark} {item.itemName} | {item.explanation} | {thisRecoverHp}{thisDamage}{thisDefense}|{item.price}원");
+                index++;
+            }
+
+            Console.WriteLine($"0.나가기 \n");
 
 
-        //string select = Console.ReadLine();
+            string select = Console.ReadLine();
 
-        //int selectbuy = 0;
-        //bool booly = int.TryParse(select, out selectbuy);
-        //if (booly)
-        //{
-        //    {
-        //        Inventory[selectbuy - 1].isEquip = true;
-        //    }
-        //}
-        //else { Console.WriteLine("보기의 숫자만 입력하세요"); Anykey.anyKey();}
-        //Console.Clear();
+            int manageItem = 0;
+            bool booly = int.TryParse(select, out manageItem);
+            if (booly)
 
+            {
+                var item = Inventory[manageItem - 1];
+
+                if (item is Weapon w)
+                {
+                    if (w.isEquip)
+                        w.isEquip = false;
+                    else { w.isEquip = true; }
+                }
+
+                else if (item is Armour a)
+                {
+                    if (a.isEquip)
+                        a.isEquip = false;
+                    else { a.isEquip = true; }
+
+                }
+
+                else if (item is ConsumableItem cs)
+                {
+                    cs.Use();
+                    Inventory.Remove(cs);
+                    Anykey.anyKey();
+                }
+
+            }
+
+            else { Console.WriteLine("보기의 숫자만 입력하세요"); Anykey.anyKey(); }
+
+            Console.Clear();
+        }
+
+
+
+
+
+
+
+    }
+    public static void ThrowItem()
+    {
+       
+        Console.Clear();
+        Console.WriteLine("보유 중인 아이템을 버릴 수 있습니다.\n");
+        Console.WriteLine("버릴 아이템 번호를 입력 해 주세요");
+        if (Inventory.Count == 0)
+        {
+            Console.Clear();
+            Console.WriteLine("아이템이 없습니다.");
+            Anykey.anyKey();
+        }
+        else
+        {
+            Console.WriteLine("아이템 ");
+            int index = 1;
+            foreach (var item in Inventory)
+            {
+                string equippedMark = (item is Weapon w && w.isEquip) || (item is Armour a && a.isEquip) ? "[E]" : "";
+                string thisDamage = (item is Weapon wp) ? "공격력 : " + wp.damage.ToString() : "";
+                string thisDefense = (item is Armour am) ? "방어력 : " + am.defense.ToString() : "";
+                string thisRecoverHp = (item is ConsumableItem cs) ? "회복력 : " + cs.recoverhp.ToString() : "";
+                Console.WriteLine($"{index}.{equippedMark} {item.itemName} | {item.explanation} | {thisRecoverHp}{thisDamage}{thisDefense}|{item.price}원");
+                index++;
+            }
+
+            Console.WriteLine($"0.나가기 \n");
+
+
+            string select = Console.ReadLine();
+
+            int manageItem = 0;
+            bool booly = int.TryParse(select, out manageItem);
+            if (booly)
+
+            {
+                var tritem = Inventory[manageItem - 1];
+                
+                if (Inventory.Count == 0)
+                {
+                    Console.Clear();
+                    Console.WriteLine("아이템이 없습니다.");
+                    Anykey.anyKey();
+                    
+                }
+                else
+                {
+                    Inventory.Remove(tritem);
+                    Console.WriteLine($"{tritem.itemName}을 버렸습니다.");
+                    Anykey.anyKey();
+                }
+            }
+
+            else { Console.WriteLine("보기의 숫자만 입력하세요"); Anykey.anyKey(); }
+
+        }
 
 
     }
@@ -856,6 +957,8 @@ public abstract class Item
     }
 
 }
+
+
 
 
 public static class Anykey // 코드 중복을 줄이기 위해 작성
