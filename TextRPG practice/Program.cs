@@ -876,23 +876,24 @@ public static class Shop //가게 씬을 위한 클래스
         bool booly = int.TryParse(select, out selectbuy);
         if (booly)
         {
-            if (User.money >= stash[selectbuy - 1].price && stash[selectbuy - 1].isSell == false)
+            var buyItem = stash[selectbuy - 1];
+            if (User.money >= buyItem.price && buyItem.isSell == false)
             {
-                stash[selectbuy - 1].isSell = true;
-                User.money -= stash[selectbuy - 1].price;
-                Inventory.Add(stash[selectbuy - 1]);
+                buyItem.isSell = true;
+                User.money -= buyItem.price;
+                Inventory.Add(buyItem);
                 
-                Console.WriteLine($"{stash[selectbuy - 1].itemName} 구매 성공 ");
+                Console.WriteLine($"{buyItem.itemName} 구매 성공 ");
                 Anykey.anyKey();
             }
-            else if (stash[selectbuy - 1].isSell)
+            else if (buyItem.isSell)
             {
                 
                 Console.WriteLine("남은 재고가 없습니다.");
                 Anykey.anyKey();
             }
 
-            else if (User.money < stash[selectbuy - 1].price)
+            else if (User.money < buyItem.price)
             {
                 
                 Console.WriteLine("소지금이 부족합니다.");
