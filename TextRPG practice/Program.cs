@@ -227,8 +227,8 @@ while (GameIsRunning)// 전체 게임흐름
     while (FistScene)
     {
         Console.Clear();
-        Console.WriteLine("당신은 귀농을 계획합니다. \n귀농 장소를 물색하기 위해, 생소한 시골 던전읍 던전면 던전리에 도착하였습니다.\nEnter");
-        Console.ReadLine();
+        Console.WriteLine("당신은 귀농을 계획합니다. \n귀농 장소를 물색하기 위해, 생소한 시골 던전읍 던전면 던전리에 도착하였습니다.\npress any key");
+        Console.ReadKey();
         Console.Clear();
         
 
@@ -243,8 +243,8 @@ while (GameIsRunning)// 전체 게임흐름
             if (nickName == "")
             {
                 Console.Clear();
-                Console.WriteLine("내 이름이... 뭐였더라...?\nEnter");
-                Console.ReadLine();
+                Console.WriteLine("내 이름이... 뭐였더라...?\npress any key");
+                Console.ReadKey();
                 Console.Clear();
                 continue;
             }
@@ -277,8 +277,8 @@ while (GameIsRunning)// 전체 게임흐름
             }
         }
         Console.Clear();
-        Console.WriteLine("당신은 갑자기 눈앞이 깜깜해 집니다.  \n잠시 후 정신을 차린 당신은 몸빼 차림으로 논두렁에 누워있습니다.\nEnter");
-        Console.ReadLine();
+        Console.WriteLine("당신은 갑자기 눈앞이 깜깜해 집니다.  \n잠시 후 정신을 차린 당신은 몸빼 차림으로 논두렁에 누워있습니다.\npress any key");
+        Console.ReadKey();
         Console.Clear();
 
 
@@ -328,8 +328,9 @@ while (GameIsRunning)// 전체 게임흐름
         while (crossroads)
 
         {
-            Console.WriteLine("당신은 비틀거리며 일어납니다.");
-            Anykey.anyKey();
+            Console.WriteLine("당신은 비틀거리며 일어납니다.\nprees any key");
+            Console.ReadKey();
+            Console.Clear();
             
             Console.WriteLine("주위를 둘러봐도 산과 숲으로 둘러 쌓여 있습니다.\n다른 것이라곤 저 멀리에 구멍가게 하나만 보입니다.");
             bool pickupmoney = false;
@@ -374,9 +375,9 @@ while (GameIsRunning)// 전체 게임흐름
                    
                     case "2":
                         Console.Clear();
-                        User.ShowInventory();
+                        
                         while (quitAnswer)
-                        {
+                        {   User.ShowInventory();
                             Console.WriteLine("1.관리하기\n0.나가기");
                             string quit = Console.ReadLine();
                             switch (quit)
@@ -387,7 +388,8 @@ while (GameIsRunning)// 전체 게임흐름
                                     break;
                                 
                                 case "1":
-
+                                    User.ManageInventory();
+                                    Console.Clear();
                                     break;
 
                                 default:
@@ -402,9 +404,10 @@ while (GameIsRunning)// 전체 게임흐름
                    
                     case "3":
                         Console.Clear();
-                        Shop.ShowStash();
+                        
                         while (quitAnswer)
                         {
+                            Shop.ShowStash();
                             Console.WriteLine("1.구매하기\n0.나가기");
                             string quit = Console.ReadLine();
                             switch (quit)
@@ -415,8 +418,9 @@ while (GameIsRunning)// 전체 게임흐름
                                     break;
                                 
                                 case "1":
+                                    Shop.BuyItem();
                                     Console.Clear();
-                                    Shop.ManageStash();
+                                    
                                     
                                             break;
                                     
@@ -623,7 +627,7 @@ public static class User  //플레이어 클래스
     {
         Console.Clear();
         Console.WriteLine("인벤토리");
-        Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다.\n");
+       
 
         if (Inventory.Count == 0)
         {
@@ -642,6 +646,42 @@ public static class User  //플레이어 클래스
                 Console.WriteLine($"{equippedMark} {item.itemName} | {item.explanation} | {thisRecoverHp}{thisDamage}{thisDefense}|{item.price}원");
             }
         }
+    }
+    public static void ManageInventory()
+    {
+        Console.Clear();
+        Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다.\n");
+        Console.WriteLine("장착or탈착, 사용 할 아이템 번호를 입력 해 주세요");
+
+        Console.WriteLine("아이템 ");
+        int index = 1;
+        foreach (var item in Inventory)
+        {
+            string equippedMark = (item is Weapon w && w.isEquip) || (item is Armour a && a.isEquip) ? "[E]" : "";
+            string thisDamage = (item is Weapon wp) ? "공격력 : " + wp.damage.ToString() : "";
+            string thisDefense = (item is Armour am) ? "방어력 : " + am.defense.ToString() : "";
+            string thisRecoverHp = (item is ConsumableItem cs) ? "회복력 : " + cs.recoverhp.ToString() : "";
+            Console.WriteLine($"{equippedMark} {item.itemName} | {item.explanation} | {thisRecoverHp}{thisDamage}{thisDefense}|{item.price}원");
+        }
+        
+        Console.WriteLine($"0.나가기");
+
+
+        //string select = Console.ReadLine();
+
+        //int selectbuy = 0;
+        //bool booly = int.TryParse(select, out selectbuy);
+        //if (booly)
+        //{
+        //    {
+        //        Inventory[selectbuy - 1].isEquip = true;
+        //    }
+        //}
+        //else { Console.WriteLine("보기의 숫자만 입력하세요"); Anykey.anyKey();}
+        //Console.Clear();
+
+
+
     }
 }
     public class EndGame //종료하는 키워드를 사용자 입력을 저장해서 사용해 보려고 만든 클래스 - 사용자 커스텀 기능
@@ -690,6 +730,7 @@ public static class Shop //가게 씬을 위한 클래스
     public static void ShowStash()
     {
         Console.Clear();
+        Console.WriteLine(shopName);
         Console.WriteLine("뭐가 필요혀?");
         Console.WriteLine();
         Console.WriteLine("[판매 목록]");
@@ -707,7 +748,7 @@ public static class Shop //가게 씬을 위한 클래스
 
     }
 
-    public static void ManageStash()
+    public static void BuyItem()
     {
         Console.Clear();
         Console.WriteLine("안 살거면 만지지 말어");
@@ -724,18 +765,44 @@ public static class Shop //가게 씬을 위한 클래스
             Console.WriteLine($" {index}.{item.itemName} |{thisRecoverHp}{thisDamage}{thisDefense}| {item.explanation} | {sellMark}");
             index++;
         }
+        Console.WriteLine($"소지금 : {User.money}원");
         Console.WriteLine($"0.나가기");
 
 
-        //string select = Console.ReadLine();
+        string select = Console.ReadLine();
 
-        //int selectbuy = 0;
-        //bool booly = int.TryParse(select, out selectbuy);
-        //if (selectbuy == (int)stash[])
-        //{
-        //    stash[selectbuy].isSell = true;
-        //}
-        //Console.Clear();
+        int selectbuy = 0;
+        bool booly = int.TryParse(select, out selectbuy);
+        if (booly)
+        {
+            if (User.money >= stash[selectbuy - 1].price && stash[selectbuy - 1].isSell == false)
+            {
+                stash[selectbuy - 1].isSell = true;
+                User.money -= stash[selectbuy - 1].price;
+                Inventory.Add(stash[selectbuy - 1]);
+                
+                Console.WriteLine($"{stash[selectbuy - 1].itemName} 구매 성공 ");
+                Anykey.anyKey();
+            }
+            else if (stash[selectbuy - 1].isSell)
+            {
+                
+                Console.WriteLine("남은 재고가 없습니다.");
+                Anykey.anyKey();
+            }
+
+            else if (User.money < stash[selectbuy - 1].price)
+            {
+                
+                Console.WriteLine("소지금이 부족합니다.");
+                Anykey.anyKey();
+            }
+        }
+        else { Console.WriteLine("보기의 숫자만 입력하세요");
+            Anykey.anyKey();
+        }
+        
+        Console.Clear();
 
 
 
@@ -795,7 +862,7 @@ public static class Anykey // 코드 중복을 줄이기 위해 작성
 {
     public static void anyKey()
     {
-        Console.WriteLine("나가기 - press any key");
+        Console.WriteLine("돌아가기 - press any key");
         Console.ReadKey();
         Console.Clear();
     }
