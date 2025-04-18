@@ -130,6 +130,7 @@ ConsumableItem potato = new ConsumableItem()
 {
     itemName = "감자",
     recoverhp = 50,
+    explanation = "감자입니다.",
     price = 500
 };
 User.Inventory.Add(potato);
@@ -138,14 +139,24 @@ ConsumableItem sweetPotato = new ConsumableItem()
 {
     itemName = "고구마",
     recoverhp = 50,
+    explanation = "고구마 입니다.",
     price = 1000
 };
 User.Inventory.Add(sweetPotato);
 
-ConsumableItem sweetPPoTTaTTo = new ConsumableItem() //게임 승리 조건 
+ConsumableItem sweetPPoTTaTTo = new ConsumableItem() //조합 아이템, 게임 승리 조건 
 {
     itemName = "감자구마",
-    recoverhp = 1000
+    recoverhp = 1000,
+    explanation = "오오..오오오옷?.",
+    price=100000
+};
+ConsumableItem DarkMatter = new ConsumableItem() //조합 실패 아이템 
+{
+    itemName = "검은 물질 ",
+    recoverhp = -500,
+    explanation = "먹으면 안될 것 같다..",
+    price = 1
 };
 
 //몬스터 인스턴스
@@ -495,8 +506,15 @@ while (GameIsRunning)// 전체 게임흐름
 
 6완성된 갈비찜을 그릇에 담고 다진 쪽파를 뿌려 완성한다.");
                             Console.WriteLine("나가기 - Enter Key");
-                            Console.ReadLine();
-                            Console.Clear();
+                            string cheat = Console.ReadLine();
+                            if (cheat == "돈 내놔 짜식아")//치트코드 추가
+                            {
+                                User.money += 100000;
+                                Console.WriteLine("+100,000원\n나가기 - Enter");
+                                Console.ReadLine();
+                                Console.Clear();
+                            }
+                            else { Console.Clear(); }
                         }
                         else if(maxevent<6)
                         {
@@ -631,8 +649,8 @@ public static class User  //플레이어 클래스
                 string equippedMark = (item is Weapon w && w.isEquip) || (item is Armour a && a.isEquip) ? "[E]" : "";//아이템의 장착여부
                 string thisDamage = (item is Weapon wp) ? "공격력 : " + wp.damage.ToString():"";
                 string thisDefense = (item is Armour am) ? "방어력 : " + am.defense.ToString():"";
-
-                Console.WriteLine($"{equippedMark} {item.itemName} | {item.explanation} | {thisDamage}{thisDefense}|{item.price}원");
+                string thisRecoverHp = (item is ConsumableItem cs) ? "회복력 : " + cs.recoverhp.ToString() : "";
+                Console.WriteLine($"{equippedMark} {item.itemName} | {item.explanation} | {thisRecoverHp}{thisDamage}{thisDefense}|{item.price}원");
             }
         }
     }
