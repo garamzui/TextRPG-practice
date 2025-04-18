@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Net.Http.Headers;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using static System.Net.Mime.MediaTypeNames;
@@ -327,9 +328,8 @@ while (GameIsRunning)// 전체 게임흐름
         while (crossroads)
 
         {
-            Console.WriteLine("당신은 비틀거리며 일어납니다.\nEnter");
-            Console.ReadLine();
-            Console.Clear();
+            Console.WriteLine("당신은 비틀거리며 일어납니다.");
+            Anykey.anyKey();
             
             Console.WriteLine("주위를 둘러봐도 산과 숲으로 둘러 쌓여 있습니다.\n다른 것이라곤 저 멀리에 구멍가게 하나만 보입니다.");
             bool pickupmoney = false;
@@ -415,8 +415,11 @@ while (GameIsRunning)// 전체 게임흐름
                                     break;
                                 
                                 case "1":
-                                    break;
-                                
+                                    Console.Clear();
+                                    Shop.ManageStash();
+                                    
+                                            break;
+                                    
                                 default:
                                     Console.Clear();
                                     Console.WriteLine("잘못 된 입력입니다.");
@@ -431,9 +434,7 @@ while (GameIsRunning)// 전체 게임흐름
                     case "4":
                         Console.Clear();
                         Console.WriteLine("미구현");
-                        Console.WriteLine("나가기 - Enter Key");
-                        Console.ReadLine();
-                        Console.Clear();
+                        Anykey.anyKey();
                         break;
                     case "5":
                         if (!pickupmoney)
@@ -442,45 +443,35 @@ while (GameIsRunning)// 전체 게임흐름
                             Console.WriteLine("신난다. 만원짜리 지폐를 주웠다.");
                             User.money += 10000;
                             pickupmoney = true;
-                            Console.WriteLine("나가기 - Enter Key");
-                            Console.ReadLine();
-                            Console.Clear();
+                            Anykey.anyKey();
                         }
                         else if (maxevent >= 6 && maxevent < 10)
                         {
                             maxevent += 1;
                             Console.Clear();
                             Console.WriteLine("이제 땅은 그만보고 어디든 가보자...");
-                            Console.WriteLine("나가기 - Enter Key");
-                            Console.ReadLine();
-                            Console.Clear();
+                            Anykey.anyKey();
                         }
                         else if (maxevent >= 10 && maxevent < 13)
                         {
                             maxevent += 1;
                             Console.Clear();
                             Console.WriteLine("그만하자니까?");
-                            Console.WriteLine("나가기 - Enter Key");
-                            Console.ReadLine();
-                            Console.Clear();
+                            Anykey.anyKey();
                         }
                         else if (maxevent == 13)
                         {
                             maxevent += 1;
                             Console.Clear();
                             Console.WriteLine("저기요?");
-                            Console.WriteLine("나가기 - Enter Key");
-                            Console.ReadLine();
-                            Console.Clear();
+                            Anykey.anyKey();
                         }
                         else if (maxevent ==14)
                         {
                             maxevent += 1;
                             Console.Clear();
                             Console.WriteLine("뛣?");
-                            Console.WriteLine("나가기 - Enter Key");
-                            Console.ReadLine();
-                            Console.Clear();
+                            Anykey.anyKey();
                         }
                         else if (maxevent >=15)
                         {
@@ -538,9 +529,7 @@ while (GameIsRunning)// 전체 게임흐름
 
                             maxevent += 1;
 
-                            Console.WriteLine("나가기 - Enter Key");
-                            Console.ReadLine();
-                            Console.Clear();
+                            Anykey.anyKey(); ;
 
                         }
                         break;
@@ -702,18 +691,56 @@ public static class Shop //가게 씬을 위한 클래스
     {
         Console.Clear();
         Console.WriteLine("뭐가 필요혀?");
-        Console.WriteLine("아이템을 구매할 수 있습니다..\n");
+        Console.WriteLine();
+        Console.WriteLine("[판매 목록]");
 
-        
-           
-            Console.WriteLine("[판매 목록]");
         foreach (var item in stash)
         {
-            string sellMark = (item is Item w && w.isSell) ? "재고소진" : item.price.ToString()+"원";
-                Console.WriteLine($" {item.itemName} | {item.explanation} | {sellMark}");
-            }
-        
+            string thisDamage = (item is Weapon wp) ? "공격력 : " + wp.damage.ToString() : "";
+            string thisDefense = (item is Armour am) ? "방어력 : " + am.defense.ToString() : "";
+            string thisRecoverHp = (item is ConsumableItem cs) ? "회복력 : " + cs.recoverhp.ToString() : "";
+            string sellMark = (item is Item w && w.isSell) ? "재고소진" : item.price.ToString() + "원";
+            Console.WriteLine($" {item.itemName} |{thisRecoverHp}{thisDamage}{thisDefense}| {item.explanation} | {sellMark}");
+
+
+        }
+
     }
+
+    public static void ManageStash()
+    {
+        Console.Clear();
+        Console.WriteLine("안 살거면 만지지 말어");
+        Console.WriteLine("아이템을 구매할 수 있습니다..\n구매 할 아이템 번호를 입력해 주세요");
+
+        Console.WriteLine("[판매 목록]");
+        int index = 1;
+        foreach (var item in stash)
+        {
+            string thisDamage = (item is Weapon wp) ? "공격력 : " + wp.damage.ToString() : "";
+            string thisDefense = (item is Armour am) ? "방어력 : " + am.defense.ToString() : "";
+            string thisRecoverHp = (item is ConsumableItem cs) ? "회복력 : " + cs.recoverhp.ToString() : "";
+            string sellMark = (item is Item w && w.isSell) ? "재고소진" : item.price.ToString() + "원";
+            Console.WriteLine($" {index}.{item.itemName} |{thisRecoverHp}{thisDamage}{thisDefense}| {item.explanation} | {sellMark}");
+            index++;
+        }
+        Console.WriteLine($"0.나가기");
+
+
+        //string select = Console.ReadLine();
+
+        //int selectbuy = 0;
+        //bool booly = int.TryParse(select, out selectbuy);
+        //if (selectbuy == (int)stash[])
+        //{
+        //    stash[selectbuy].isSell = true;
+        //}
+        //Console.Clear();
+
+
+
+    }
+
 
 }
 
@@ -763,16 +790,26 @@ public abstract class Item
 
 }
 
+
+public static class Anykey // 코드 중복을 줄이기 위해 작성
+{
+    public static void anyKey()
+    {
+        Console.WriteLine("나가기 - press any key");
+        Console.ReadKey();
+        Console.Clear();
+    }
+}
 //부엌 클래스
 public class Kitchen
+{
+    public void cook()
     {
-        public void cook()
-        {
 
-        }
     }
+}
 
 
 
- 
+
 
